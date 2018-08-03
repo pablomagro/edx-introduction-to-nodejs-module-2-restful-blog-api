@@ -12,21 +12,8 @@ const appRoutes = require('./routes')
 // Server port
 const PORT = 3000
 
-// App store data.
-let store = {
-  posts: [
-    {
-      name: 'Top 10 ES6 Features every Web Developer must know',
-      url: 'https://webapplog.com/es6',
-      text: 'This essay will give you a quick introduction to ES6. If you don’t know what is ES6, it’s a new JavaScript implementation.',
-      comments: [
-        { text: 'Cruel…..var { house, mouse} = No type optimization at all' },
-        { text: 'I think you’re undervaluing the benefit of ‘let’ and ‘const’.' },
-        { text: '(p1,p2)=>{ … } ,i understand this ,thank you !' }
-      ]
-    }
-  ]
-}
+// Load the app data store.
+let store = require('./data/store')
 
 // Create the express instance.
 let app = express()
@@ -35,7 +22,7 @@ app.use(bodyParser.json())
 app.use(logger('dev'))
 app.use(errorhandler())
 
-// Set data store.
+// Set data store within the request object.
 app.use((req, res, next) => {
   req.store = store
   next()
@@ -45,4 +32,5 @@ app.use((req, res, next) => {
 app.use(appRoutes.posts)
 app.use(appRoutes.comments)
 
+// Start that server, and listen for connections.
 app.listen(3000, () => console.log(`Server listening on localhost:${PORT}`))
